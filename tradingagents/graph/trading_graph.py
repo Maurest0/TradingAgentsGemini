@@ -194,34 +194,36 @@ class TradingAgentsGraph:
 
     def _log_state(self, trade_date, final_state):
         """Log the final state to a JSON file."""
-        self.log_states_dict[str(trade_date)] = {
-            "company_of_interest": final_state["company_of_interest"],
-            "trade_date": final_state["trade_date"],
-            "market_report": final_state["market_report"],
-            "sentiment_report": final_state["sentiment_report"],
-            "news_report": final_state["news_report"],
-            "fundamentals_report": final_state["fundamentals_report"],
-            "investment_debate_state": {
-                "bull_history": final_state["investment_debate_state"]["bull_history"],
-                "bear_history": final_state["investment_debate_state"]["bear_history"],
-                "history": final_state["investment_debate_state"]["history"],
-                "current_response": final_state["investment_debate_state"][
-                    "current_response"
-                ],
-                "judge_decision": final_state["investment_debate_state"][
-                    "judge_decision"
-                ],
-            },
-            "trader_investment_decision": final_state["trader_investment_plan"],
-            "risk_debate_state": {
-                "risky_history": final_state["risk_debate_state"]["risky_history"],
-                "safe_history": final_state["risk_debate_state"]["safe_history"],
-                "neutral_history": final_state["risk_debate_state"]["neutral_history"],
-                "history": final_state["risk_debate_state"]["history"],
-                "judge_decision": final_state["risk_debate_state"]["judge_decision"],
-            },
-            "investment_plan": final_state["investment_plan"],
-            "final_trade_decision": final_state["final_trade_decision"],
+        log_entry = {
+            str(trade_date): {
+                "company_of_interest": final_state["company_of_interest"],
+                "trade_date": final_state["trade_date"],
+                "market_report": final_state["market_report"],
+                "sentiment_report": final_state["sentiment_report"],
+                "news_report": final_state["news_report"],
+                "fundamentals_report": final_state["fundamentals_report"],
+                "investment_debate_state": {
+                    "bull_history": final_state["investment_debate_state"]["bull_history"],
+                    "bear_history": final_state["investment_debate_state"]["bear_history"],
+                    "history": final_state["investment_debate_state"]["history"],
+                    "current_response": final_state["investment_debate_state"][
+                        "current_response"
+                    ],
+                    "judge_decision": final_state["investment_debate_state"][
+                        "judge_decision"
+                    ],
+                },
+                "trader_investment_decision": final_state["trader_investment_plan"],
+                "risk_debate_state": {
+                    "risky_history": final_state["risk_debate_state"]["risky_history"],
+                    "safe_history": final_state["risk_debate_state"]["safe_history"],
+                    "neutral_history": final_state["risk_debate_state"]["neutral_history"],
+                    "history": final_state["risk_debate_state"]["history"],
+                    "judge_decision": final_state["risk_debate_state"]["judge_decision"],
+                },
+                "investment_plan": final_state["investment_plan"],
+                "final_trade_decision": final_state["final_trade_decision"],
+            }
         }
 
         # Save to file
@@ -232,7 +234,7 @@ class TradingAgentsGraph:
             f"eval_results/{self.ticker}/TradingAgentsStrategy_logs/full_states_log_{trade_date}.json",
             "w",
         ) as f:
-            json.dump(self.log_states_dict, f, indent=4)
+            json.dump(log_entry, f, indent=4)
 
     def reflect_and_remember(self, returns_losses):
         """Reflect on decisions and update memory based on returns."""
